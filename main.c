@@ -1,6 +1,7 @@
 #include "uart.h"
 #include "utils.h"
 #include "hard_info.h"
+#include "task.h"
 
 char buff[50];
 
@@ -14,6 +15,7 @@ void main(){
 	int size;
 	char *kernel_adr=(char*)0x40000;
 	while(1){
+			idle();
 		c=uart_read();
 		if(c==0x7f||c==0x08){
 			if(count!=0){

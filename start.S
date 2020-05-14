@@ -33,6 +33,8 @@ rest_init:
 	mrs x0, cpacr_el1
 	orr x0, x0, #(3 << 20)
 	msr cpacr_el1, x0
+	bl task_init				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	bl main						//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	ldr x0, =exception_table_el1    //set exception table
 	msr vbar_el1, x0
 	mov x0, 0x0

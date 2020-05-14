@@ -4,6 +4,9 @@ OBJ:=$(patsubst %.c,%.o,$(SRC))
 
 all: kernel8.img
 
+switch.o: switch.S
+	aarch64-linux-gnu-gcc -c switch.S -o switch.o
+
 handlers.o: handlers.S
 	aarch64-linux-gnu-gcc -c handlers.S -o handlers.o
 
@@ -12,6 +15,9 @@ start.o: start.S
 
 exc_table.o: exc_table.S
 	aarch64-linux-gnu-gcc -c exc_table.S -o exc_table.o
+
+task.o:task.c
+	aarch64-linux-gnu-gcc -c task.c -o task.o
 
 exc_contexts.o: exc_contexts.c
 	aarch64-linux-gnu-gcc -c exc_contexts.c -o exc_contexts.o
@@ -34,8 +40,8 @@ utils.o: utils.c
 hard_info.o:hard_info.c
 	aarch64-linux-gnu-gcc -c hard_info.c -o hard_info.o
 
-kernel8.elf: start.o uart.o main.o utils.o hard_info.o mbox.o exc_table.o exc_contexts.o handlers.o timer.o
-	aarch64-linux-gnu-ld -T link.ld -o kernel8.elf start.o uart.o main.o utils.o hard_info.o mbox.o exc_table.o handlers.o exc_contexts.o timer.o
+kernel8.elf: start.o uart.o main.o utils.o hard_info.o mbox.o exc_table.o exc_contexts.o handlers.o timer.o task.o switch.o
+	aarch64-linux-gnu-ld -T link.ld -o kernel8.elf start.o uart.o main.o utils.o hard_info.o mbox.o exc_table.o handlers.o exc_contexts.o timer.o task.o switch.o
 
 #kernel8.elf: $(OBJ)
 #	aarch64-linux-gnu-ld -T link.ld -o kernel8.elf $(OBJ)
